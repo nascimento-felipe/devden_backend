@@ -9,3 +9,93 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Usuarios {
+  USR_ID            Int       @id @default(autoincrement())
+  USR_NAME          String
+  USR_SENHA         String
+  USR_EMAIL         String
+  USR_NOME_COMPLETO String
+  USR_STAFF         Int
+  Posts             Posts[]
+  Tags              Tags[]
+  Tickets           Tickets[]
+  Topicos           Topicos[]
+
+  @@map("USUARIOS")
+}
+
+model Posts {
+  POS_ID             Int    @id @default(autoincrement())
+  POS_MENSAGEM       String
+  POS_URL_FOTO       String
+  FK_USUARIOS_USR_ID Int
+
+  fk_user_id Usuarios @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
+
+  @@map("POSTS")
+}
+
+model Tags {
+  TAG_ID             Int    @id @default(autoincrement())
+  TAG_NOME           String
+  FK_USUARIOS_USR_ID Int
+
+  fk_user_id  Usuarios      @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
+  TopicosTags TopicosTags[]
+
+  @@map("TAGS")
+}
+
+model Tickets {
+  TIC_ID             Int    @id @default(autoincrement())
+  TIC_MENSAGEM       String
+  FK_USUARIOS_USR_ID Int
+
+  fk_user_id           Usuarios               @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
+  TicketsTiposDenuncia TicketsTiposDenuncia[]
+
+  @@map("TICKETS")
+}
+
+model TipoDenuncia {
+  TIP_ID               Int                    @id @default(autoincrement())
+  TIP_NOME             String
+  TicketsTiposDenuncia TicketsTiposDenuncia[]
+
+  @@map("TIPO_DENUNCIA")
+}
+
+model Topicos {
+  TOP_ID             Int    @id @default(autoincrement())
+  TOP_TITULO         String
+  TOP_MENSAGEM       String
+  FK_USUARIOS_USR_ID Int
+
+  fk_user_id  Usuarios      @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
+  TopicosTags TopicosTags[]
+
+  @@map("TOPICOS")
+}
+
+model TicketsTiposDenuncia {
+  TTD_ID                  Int @id @default(autoincrement())
+  FK_TICKETS_TIC_ID       Int
+  FK_TIPO_DENUNCIA_TIP_ID Int
+
+  fk_tipo_denuncia_id TipoDenuncia @relation(fields: [FK_TIPO_DENUNCIA_TIP_ID], references: [TIP_ID])
+  fk_tic_id           Tickets      @relation(fields: [FK_TICKETS_TIC_ID], references: [TIC_ID])
+
+  @@map("TICKETS_TIPOS_DENUNCIAS")
+}
+
+model TopicosTags {
+  TOT_ID            Int @id @default(autoincrement())
+  FK_TOPICOS_TOP_ID Int
+  FK_TAGS_TAG_ID    Int
+
+  fk_topicos_id Topicos @relation(fields: [FK_TOPICOS_TOP_ID], references: [TOP_ID])
+  fk_tags_id    Tags    @relation(fields: [FK_TAGS_TAG_ID], references: [TAG_ID])
+
+  @@map("TOPICOS_TAGS")
+}

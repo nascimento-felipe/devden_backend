@@ -1,0 +1,144 @@
+/*
+  Warnings:
+
+  - You are about to drop the `Posts` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `Tags` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `Tickets` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `TicketsTiposDenuncia` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `TipoDenuncia` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `Topicos` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `TopicosTags` table. If the table is not empty, all the data it contains will be lost.
+
+*/
+-- DropForeignKey
+ALTER TABLE `Posts` DROP FOREIGN KEY `Posts_FK_USUARIOS_USR_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `Tags` DROP FOREIGN KEY `Tags_FK_USUARIOS_USR_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `Tickets` DROP FOREIGN KEY `Tickets_FK_USUARIOS_USR_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `TicketsTiposDenuncia` DROP FOREIGN KEY `TicketsTiposDenuncia_FK_TICKETS_TIC_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `TicketsTiposDenuncia` DROP FOREIGN KEY `TicketsTiposDenuncia_FK_TIPO_DENUNCIA_TIP_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `Topicos` DROP FOREIGN KEY `Topicos_FK_USUARIOS_USR_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `TopicosTags` DROP FOREIGN KEY `TopicosTags_FK_TAGS_TAG_ID_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `TopicosTags` DROP FOREIGN KEY `TopicosTags_FK_TOPICOS_TOP_ID_fkey`;
+
+-- DropTable
+DROP TABLE `Posts`;
+
+-- DropTable
+DROP TABLE `Tags`;
+
+-- DropTable
+DROP TABLE `Tickets`;
+
+-- DropTable
+DROP TABLE `TicketsTiposDenuncia`;
+
+-- DropTable
+DROP TABLE `TipoDenuncia`;
+
+-- DropTable
+DROP TABLE `Topicos`;
+
+-- DropTable
+DROP TABLE `TopicosTags`;
+
+-- CreateTable
+CREATE TABLE `POSTS` (
+    `POS_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `POS_MENSAGEM` VARCHAR(191) NOT NULL,
+    `POS_URL_FOTO` VARCHAR(191) NOT NULL,
+    `FK_USUARIOS_USR_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`POS_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TAGS` (
+    `TAG_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `TAG_NOME` VARCHAR(191) NOT NULL,
+    `FK_USUARIOS_USR_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`TAG_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TICKETS` (
+    `TIC_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `TIC_MENSAGEM` VARCHAR(191) NOT NULL,
+    `FK_USUARIOS_USR_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`TIC_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TIPO_DENUNCIA` (
+    `TIP_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `TIP_NOME` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`TIP_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TOPICOS` (
+    `TOP_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `TOP_TITULO` VARCHAR(191) NOT NULL,
+    `TOP_MENSAGEM` VARCHAR(191) NOT NULL,
+    `FK_USUARIOS_USR_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`TOP_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TICKETS_TIPOS_DENUNCIAS` (
+    `TTD_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `FK_TICKETS_TIC_ID` INTEGER NOT NULL,
+    `FK_TIPO_DENUNCIA_TIP_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`TTD_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TOPICOS_TAGS` (
+    `TOT_ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `FK_TOPICOS_TOP_ID` INTEGER NOT NULL,
+    `FK_TAGS_TAG_ID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`TOT_ID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `POSTS` ADD CONSTRAINT `POSTS_FK_USUARIOS_USR_ID_fkey` FOREIGN KEY (`FK_USUARIOS_USR_ID`) REFERENCES `USUARIOS`(`USR_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TAGS` ADD CONSTRAINT `TAGS_FK_USUARIOS_USR_ID_fkey` FOREIGN KEY (`FK_USUARIOS_USR_ID`) REFERENCES `USUARIOS`(`USR_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TICKETS` ADD CONSTRAINT `TICKETS_FK_USUARIOS_USR_ID_fkey` FOREIGN KEY (`FK_USUARIOS_USR_ID`) REFERENCES `USUARIOS`(`USR_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TOPICOS` ADD CONSTRAINT `TOPICOS_FK_USUARIOS_USR_ID_fkey` FOREIGN KEY (`FK_USUARIOS_USR_ID`) REFERENCES `USUARIOS`(`USR_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TICKETS_TIPOS_DENUNCIAS` ADD CONSTRAINT `TICKETS_TIPOS_DENUNCIAS_FK_TIPO_DENUNCIA_TIP_ID_fkey` FOREIGN KEY (`FK_TIPO_DENUNCIA_TIP_ID`) REFERENCES `TIPO_DENUNCIA`(`TIP_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TICKETS_TIPOS_DENUNCIAS` ADD CONSTRAINT `TICKETS_TIPOS_DENUNCIAS_FK_TICKETS_TIC_ID_fkey` FOREIGN KEY (`FK_TICKETS_TIC_ID`) REFERENCES `TICKETS`(`TIC_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TOPICOS_TAGS` ADD CONSTRAINT `TOPICOS_TAGS_FK_TOPICOS_TOP_ID_fkey` FOREIGN KEY (`FK_TOPICOS_TOP_ID`) REFERENCES `TOPICOS`(`TOP_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TOPICOS_TAGS` ADD CONSTRAINT `TOPICOS_TAGS_FK_TAGS_TAG_ID_fkey` FOREIGN KEY (`FK_TAGS_TAG_ID`) REFERENCES `TAGS`(`TAG_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
