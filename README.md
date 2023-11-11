@@ -25,6 +25,8 @@ ou, caso você esteja usando npm:
 $ npm install -g @nestjs/cli
 ```
 
+- Recomendo também instalar o [Insomnia](https://insomnia.rest/download), que mais tarde ele vai ser útil pra quando formos criar uma funcionalidade nova ou adicionar algo no banco de dados.
+
 ## Instalação
 
 Primeiro, você vai precisar clonar o repositório. Pode baixando ele ali em cima, dando um git clone ou ainda usando a [cli do github](https://cli.github.com/) (pra esse último precisa instalar o cli do github antes).
@@ -107,7 +109,7 @@ Como eu tinha falado lá em cima, a gente tem as pastas _controllers_ e _service
 $ nest generate controller controllers/user
 ```
 
-$\textcolor{red}{\text{Precisa ter o nest cli instalado pra isso aqui, então se você não instalou volta lá pra parte de instalação pra fazer isso}}$
+[$\textcolor{red}{\text{Precisa ter o nest cli instalado pra isso aqui, então se você não instalou volta lá pra parte de instalação pra fazer isso}}$](#primeiros-passos)
 
 e pronto! O controller vai estar criado dentro de controllers/user, junto com um arquivo de testes que a gente não vai usar mas é interessante deixar ele ali por enquanto.
 
@@ -119,14 +121,14 @@ $ nest generate service services/user
 
 ### Dica
 
-Não precisa digitar o comando todo, eu escrevi ali pra todo mundo saber o que significa o comando e o que ele está fazendo, mas se digitar só a primeira letra de _generate_ e _controller_ ou _service_ ele funciona também.
+Não precisa digitar o comando todo, eu escrevi ali pra todo mundo saber o que significa o comando e o que ele está fazendo, mas se digitar só a primeira letra de _generate_ ele funciona também.
 
 A pasta e o nome do arquivo depois precisam estar completos e certinhos pra ele poder criar no lugar correto.
 
 Exemplo com service:
 
 ```bash
-$ nest g s services/user
+$ nest g service services/user
 ```
 
 ## Exemplos práticos
@@ -266,6 +268,16 @@ Deu certo!
 Se quiser, pode testar criando mais alguns usuários e pegando eles depois na rota, ou até conferindo no MySQL Workbench pra ver se estão lá mesmo hehe.
 
 Enfim, esse é o basicão da criação de rotas e de serviços.
+
+## Possíveis erros que podem dar no começo
+
+- Não vai conectar com o banco de dados na primeira vez que você rodar. Pra ele rodar, eu preciso te passar um arquivo com a url do banco de dados. Não passei aqui porque o meu MySQL não tem senha, talvez o de vocês tenha, daí dessa forma fica mais fácil de gerenciar isso. Quando for rodar, me manda uma mensagem que mando o arquivo e ajudo a alterar a url pra ele conseguir conectar com o banco certinho.
+
+- Muito cuidado quando você errar o nome de algum arquivo na criação de um serviço ou de um controller. Se você errar e escrever "nest g controller control/user" e quiser apagar pra refazer, vai ter que apagar dentro do arquivo **app.module.ts**. Mas cuidado porque se vocẽ apagar algum outro módulo o server vai dar erro e parar de funcionar, provavelmente.
+
+  - Pode me chamar pra ajudar a arrumar, se vc tiver alguma dúvida
+
+- As rotas não retornam ou então não criam nada. Pode ser que você esqueceu de colocar o async e o await, daí a função retorna sem esperar a resposta do banco. Geralmente isso faz ele retornar uma lista vazia ou não criar nada no banco.
 
 ## Dúvidas
 
