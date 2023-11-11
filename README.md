@@ -1,3 +1,5 @@
+# Devden
+
 ## Descrição
 
 Esse repositório tem por objetivo ser o backend do projeto Devden, site de conversa entre desenvolvedores de software.
@@ -126,6 +128,144 @@ Exemplo com service:
 ```bash
 $ nest g s services/user
 ```
+
+## Exemplos práticos
+
+Vou deixar um passo a passo pra ajudar na criação das rotas e das funcionalidades na prática. Uma das funcionalidades que eu tenho que fazer é a de usuários, então já aproveitei pra fazer uma parte e usar aqui de exemplo.
+
+Primeiro, criei o controller e o service do user com o mesmo comando [daqui de cima](#a-parte-que-vai-ser-extremamente-útil-pra-gente), só que eu tirei os arquivos de teste que ele cria junto pra não ficar dando erro, porque eu acho meio chato e a gente não vai precisar deles mesmo, então dá pra só tirar, se vcs quiserem.
+
+Depois de criar o arquivo de serviço e tirar o arquivo de teste, ficou assim na pasta:
+
+![](./readme_assets/praticoPasta.png)
+
+O controller ficou a mesma coisa, mas ficou dentro da pasta _controllers_.
+
+Dentro do arquivo _user.service.ts_, que veio vazio, eu comecei a colocar a função de listar todos os usuários pra fazer um teste e depois fiz a função de criar um novo usuário.
+
+### Listar todos
+
+#### Service
+
+Ele veio assim no começo pra mim:
+
+![](./readme_assets/praticoService.png)
+
+Daí eu criei a função de pegar todos os usuários:
+
+![](./readme_assets/praticoService2.png)
+
+O que esse trecho de código faz é basicamente chamar a função _findMany()_ dentro da tabela usuarios. O prisma é o lugar que facilita pra gente achar todas as tabelas.
+
+Detalhe: na linha 8 tem uma palavra _async_ porque vamos mexer com o banco e, pra isso, precisamos colocar essa palavra pra avisar que em alguma parte dessa função teremos que esperar a transação com o banco começar E terminar, porque se ela sair antes não vamos conseguir terminar a transação com o banco e nada vai ser inserido.
+
+No caso dessa função, precisamos esperar o banco buscar os usuários (então colocamos a palavra _await_ na frente da linha que vai ter que fazer a operação no banco, que é a linha 9) e nos retornar essa resposta, por isso usamos a palavra async.
+
+Existem várias outras funções, como pegar por id, pegar só o primeiro que aparecer, criar um novo dado, excluir, alterar, etc. Nesse caso, era só chamar essa função que ela retorna todos os usuários da tabela.
+
+#### Controller
+
+Dentro do controller, então, a gente cria a rota e chama essa função que a gente acabou de criar no service:
+
+![](./readme_assets/praticoController.png)
+
+O @Controller da linha 4, como já disse lá em cima, vai dizer qual é a rota "base". Quer dizer que todas as rotas desse vão começar com "/user" e daí vem o que tiver em cima dela. Caso não tiver nada, então é só "/user" mesmo.
+
+Na linha 6 a gente cria o construtor da classe que vai ter uma variável que é do tipo _UserService_ (o em verde) que é a classe que a gente acabou de criar. A variável userService que vai ter todas as funções e vai fazer as coisas pra gente.
+
+Na linha 8 a gente tem o decorator @Get() pra falar que a função embaixo dela é uma rota do tipo GET e, como não tem nada dentro do decorator, a rota dessa função vai ser "/user" mesmo.
+
+Dentro da função, por fim, a gente usa a nossa variável _userService_ pra chamar a função que acabamos de criar, a _getAllUsers()_.
+
+E pronto, a nossa rota já está feita! Pra testar, é só iniciar o server com _nest start_ e ir na url http://localhost:3000/user
+
+Se você quiser, pode usar o [Insomnia](https://insomnia.rest/download) pra fazer essa requisição. Eu vou usar e recomendo porque depois vamos fazer rotas do tipo POST e é difícil de fazer sem um aplicativo próprio pra isso.
+
+No Insomnia, eu faço o seguinte:
+
+- Crio uma nova coleção
+- Crio um http request do tipo GET
+
+![](./readme_assets/Insomnia1.png)
+
+- Coloco a url que eu quero testar ali em cima
+
+![](./readme_assets/Insomnia2.png)
+
+- Coloco o servidor pra rodar e clico em _Send_
+
+Se tudo der certo, é pra retornar um status 200 e uma lista vazia, já que não temos nada cadastrado no servidor ainda hehe. Assim que cadastramos o primeiro, a gente volta pra esse pra tentar e ver se ele aparece aqui.
+
+### Criar um novo usuário
+
+Agora, usando o mesmo arquivo, vou criar uma função dentro do service para criar um usuário novo e depois criar a rota pra receber a requisição desse novo usuário.
+
+#### Service
+
+Assim fica o arquivo com a nova função colocada:
+
+![](./readme_assets/praticoServiceCriar.png)
+
+A maior parte do arquivo eu já expliquei, o que mudou foi da linha 9 até a linha 17. A linha 9 eu defino a função _createUser_ que recebe como parâmetro uma variável _data_ que é do tipo _Prisma.UsuariosCreateInput_. Não se preocupe com esse tipo, ele foi criado automaticamente pelo nest pra gerar erros e verificações quando alguém tentar fazer uma requisição sem passar todas as informações necessárias.
+
+Sempre que precisar passar as informações assim pra criação de algum dado em uma tabela, o nome da classe gerada pelo nest vai ser _Prisma.[nome da tabela]CreateInput_
+
+Seguindo pro corpo da função, a gente tem um try catch só pra garantir que o dado vai ser inserido e, caso der erro, ele mande o erro pra gente saber o que aconteceu.
+
+Dentro do try, a gente tem a parte do código que realmente faz a inserção do novo usuário dentro do banco. Igual a parte de _getAllUsers()_, nós chamamos nossa variável _prisma_, dentro da tabela _usuarios_ e pedimos a função _create_ dessa vez, já que vamos criar um usuário.
+
+Como vamos passar dados, precisamos mandar os argumentos pra essa função. Pra isso, abrimos chaves e passamos nossa variável _data_, que recebemos como parâmetro ali em cima.
+
+Vamos agora para o controller criar a rota
+
+#### Controller
+
+O controller com a rota nova fica assim:
+
+![](./readme_assets/praticoController2.png)
+
+As coisas novas estão na interface na linha 4 até a linha 9 e na rota da linha 21.
+
+Começando pela rota, passamos o decorator @Post() pra dizer que é uma rota do tipo POST e dentro dela colocamos "/new", o que significa que pra acessar ela precisamos entrar na url "user/new", pois "user" é a rota base.
+
+Depois, temos a função que cria a rota em si e passamos dentro dela os parâmetros "@Body() user: User" pra dizer que vamos receber uma requisição com um body e nesse body vamos ter uma variável user, que é do tipo User. Esse tipo é a interface que está na linha 4 até a linha 9. Então, estamos dizendo que a variável user tem os atributos USR_NAME, USR_SENHA...
+
+Por fim, dentro da função mesmo nós chamamos a função de criar usuário de dentro do serviço que criamos agora há pouco. Como a nossa variável user tem os mesmos atributos da nossa tabela no banco, ele consegue fazer essa passagem.
+
+E pronto! Se tudo der certo, conseguimos colocar um usuário novo no banco agora
+
+Meu teste:
+
+- Criei uma nova requisição no Insomnia do tipo post e passe a url que quero testar (http://localhost:3000/user/new)
+- Criei um corpo pra requisição que vai ser o usuário a ser inserido:
+
+```json
+{
+  "USR_NAME": "Felipe",
+  "USR_SENHA": "123",
+  "USR_EMAIL": "email@email.com",
+  "USR_NOME_COMPLETO": "Felipe de Andrade",
+  "USR_STAFF": 1
+}
+```
+
+- Iniciei o server e cliquei em Send pra criar o usuário novo
+
+Resultado:
+
+![](./readme_assets/insomniaNewUser.png)
+
+Aparentemente está tudo certo. Tivemos um retorno 201, que significa que foi criado, e nenhum erro foi retornado no body.
+
+Vamos ver agora se aparece algo no nosso banco usando a rota de "getAllUsers":
+
+![](./readme_assets/insomniaVerifyUser.png)
+
+Deu certo!
+
+Se quiser, pode testar criando mais alguns usuários e pegando eles depois na rota, ou até conferindo no MySQL Workbench pra ver se estão lá mesmo hehe.
+
+Enfim, esse é o basicão da criação de rotas e de serviços.
 
 ## Dúvidas
 

@@ -7,20 +7,12 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(data: Prisma.UsuariosCreateInput) {
-    await this.prisma.usuarios.create({
-      data,
-    });
-
-    if (
-      this.prisma.usuarios.findFirst({
-        where: {
-          USR_NAME: data.USR_NAME,
-        },
-      })
-    ) {
-      return 'Deu certo';
-    } else {
-      return 'Deu errado e não escreveu no banco';
+    try {
+      await this.prisma.usuarios.create({
+        data,
+      });
+    } catch (error) {
+      return { error };
     }
   }
 
