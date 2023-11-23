@@ -9,7 +9,7 @@ interface User {
   USR_STAFF: number;
 }
 
-@Controller('user')
+@Controller('exemplo')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
