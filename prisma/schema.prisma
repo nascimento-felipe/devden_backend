@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Usuarios {
-  USR_ID            Int       @id @default(autoincrement())
+  USR_ID            Int         @id @default(autoincrement())
   USR_NAME          String
   USR_SENHA         String
   USR_EMAIL         String
@@ -21,6 +21,7 @@ model Usuarios {
   Tags              Tags[]
   Tickets           Tickets[]
   Topicos           Topicos[]
+  Mensagens         Mensagens[]
 
   @@map("USUARIOS")
 }
@@ -45,6 +46,20 @@ model Tags {
   TopicosTags TopicosTags[]
 
   @@map("TAGS")
+}
+
+model Mensagens {
+  MEN_ID       Int      @id @default(autoincrement())
+  MEN_MENSAGEM String   @db.VarChar(200)
+  MEN_DATA     DateTime
+
+  FK_TOPICO_TOP_ID   Int
+  FK_USUARIOS_USR_ID Int
+
+  fk_topico_id Topicos  @relation(fields: [FK_TOPICO_TOP_ID], references: [TOP_ID])
+  fk_user_id   Usuarios @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
+
+  @@map("MENSAGENS")
 }
 
 model Tickets {
@@ -74,6 +89,7 @@ model Topicos {
 
   fk_user_id  Usuarios      @relation(fields: [FK_USUARIOS_USR_ID], references: [USR_ID])
   TopicosTags TopicosTags[]
+  Mensagens   Mensagens[]
 
   @@map("TOPICOS")
 }

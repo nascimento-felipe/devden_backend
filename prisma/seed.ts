@@ -3,6 +3,17 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.ticketsTiposDenuncia.deleteMany();
+  await prisma.topicosTags.deleteMany();
+  await prisma.tipoDenuncia.deleteMany();
+
+  await prisma.mensagens.deleteMany();
+  await prisma.posts.deleteMany();
+  await prisma.tags.deleteMany();
+  await prisma.tickets.deleteMany();
+  await prisma.topicos.deleteMany();
+  await prisma.usuarios.deleteMany();
+
   const felipe = await prisma.usuarios.create({
     data: {
       USR_NAME: 'Lama',
@@ -25,57 +36,51 @@ async function main() {
     },
   });
 
-  // const topico = await prisma.topicos.create({
-  //   data: {
-  //     TOP_ID: 1,
-  //     FK_USUARIOS_USR_ID: felipe.USR_ID,
-  //     TOP_MENSAGEM: 'Essa é a mensagem inicial do tópico',
-  //     TOP_TITULO: 'Esse é o título do tópico',
-  //   },
-  // });
+  const topico = await prisma.topicos.create({
+    data: {
+      FK_USUARIOS_USR_ID: felipe.USR_ID,
+      TOP_MENSAGEM: 'Essa é a mensagem inicial do tópico',
+      TOP_TITULO: 'Esse é o título do tópico',
+    },
+  });
 
-  // const post = await prisma.posts.create({
-  //   data: {
-  //     FK_USUARIOS_USR_ID: filipe.USR_ID,
-  //     POS_ID: 1,
-  //     POS_MENSAGEM: 'Meu nome é muniz',
-  //     POS_URL_FOTO: '',
-  //   },
-  // });
+  const post = await prisma.posts.create({
+    data: {
+      FK_USUARIOS_USR_ID: filipe.USR_ID,
+      POS_MENSAGEM: 'Meu nome é muniz',
+      POS_URL_FOTO: '',
+    },
+  });
 
-  // await prisma.tags.create({
-  //   data: {
-  //     TAG_ID: 1,
-  //     TAG_NOME: 'Computação gráfica',
-  //     FK_USUARIOS_USR_ID: felipe.USR_ID,
-  //   },
-  // });
+  await prisma.tags.create({
+    data: {
+      TAG_NOME: 'Computação gráfica',
+      FK_USUARIOS_USR_ID: felipe.USR_ID,
+    },
+  });
 
-  // await prisma.tags.create({
-  //   data: {
-  //     TAG_ID: 1,
-  //     TAG_NOME: 'Computação quântica',
-  //     FK_USUARIOS_USR_ID: filipe.USR_ID,
-  //   },
-  // });
+  await prisma.tags.create({
+    data: {
+      TAG_NOME: 'Computação quântica',
+      FK_USUARIOS_USR_ID: filipe.USR_ID,
+    },
+  });
 
-  // await prisma.mensagens.create({
-  //   data: {
-  //     MEN_ID: 1,
-  //     MEN_MENSAGEM: 'Primeira mensagem do topico',
-  //     MEN_DATA: new Date(),
-  //     FK_USUARIOS_USR_ID: filipe.USR_ID,
-  //     FK_TOPICO_TOP_ID: topico.TOP_ID,
-  //   },
-  // });
+  await prisma.mensagens.create({
+    data: {
+      MEN_MENSAGEM: 'Primeira mensagem do topico',
+      MEN_DATA: new Date(),
+      FK_USUARIOS_USR_ID: filipe.USR_ID,
+      FK_TOPICO_TOP_ID: topico.TOP_ID,
+    },
+  });
 
-  // await prisma.tickets.create({
-  //   data: {
-  //     TIC_ID: 1,
-  //     TIC_MENSAGEM: 'Abuso de autoridade',
-  //     FK_USUARIOS_USR_ID: filipe.USR_ID,
-  //   },
-  // });
+  await prisma.tickets.create({
+    data: {
+      TIC_MENSAGEM: 'Abuso de autoridade',
+      FK_USUARIOS_USR_ID: filipe.USR_ID,
+    },
+  });
 }
 
 main()
