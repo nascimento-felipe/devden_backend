@@ -12,10 +12,16 @@ import { CriarTopicoService } from './services/criar-topico/criar-topico.service
 import { CriarTopicoController } from './controllers/criar-topico/criar-topico.controller';
 import { EnviarMensagemService } from './services/enviar-mensagem/enviar-mensagem.service';
 import { EnviarMensagemController } from './controllers/enviar-mensagem/enviar-mensagem.controller';
+import { BuscarMensagemService } from './services/buscar-mensagem/buscar-mensagem.service';
+import { BuscarMensagemController } from './controllers/buscar-mensagem/buscar-mensagem.controller';
+import { CriarPostService } from './services/criar-post/criar-post.service';
+import { CriarPostController } from './controllers/criar-post/criar-post.controller';
+import { BuscarTopicoService } from './services/buscar-topico/buscar-topico.service';
+import { BuscarTopicoController } from './controllers/buscar-topico/buscar-topico.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController],
-  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService],
+  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController, BuscarMensagemController, CriarPostController, BuscarTopicoController],
+  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService, BuscarMensagemService, CriarPostService, BuscarTopicoService],
 })
 export class AppModule {}
