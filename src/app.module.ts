@@ -18,10 +18,12 @@ import { CriarPostService } from './services/criar-post/criar-post.service';
 import { CriarPostController } from './controllers/criar-post/criar-post.controller';
 import { BuscarTopicoService } from './services/buscar-topico/buscar-topico.service';
 import { BuscarTopicoController } from './controllers/buscar-topico/buscar-topico.controller';
+import { GerenciarTagsService } from './services/gerenciar-tags/gerenciar-tags.service';
+import { GerenciarTagsController } from './controllers/gerenciar-tags/gerenciar-tags.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController, BuscarMensagemController, CriarPostController, BuscarTopicoController],
-  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService, BuscarMensagemService, CriarPostService, BuscarTopicoService],
+  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController, BuscarMensagemController, CriarPostController, BuscarTopicoController, GerenciarTagsController],
+  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService, BuscarMensagemService, CriarPostService, BuscarTopicoService, GerenciarTagsService],
 })
 export class AppModule {}
