@@ -1,0 +1,57 @@
+// USUÁRIOS
+// pegar um usuário com email e senha (login)
+GET http://localhost:3000/user
+Content-Type: application/json
+
+{
+  "USR_SENHA": "123",
+  "USR_EMAIL": "filipe@devden.com"
+}
+
+###
+
+// MENSAGENS
+// procura por mensagem dentro do tópico
+GET http://localhost:3000/messages
+Content-Type: application/json
+
+{
+	"FK_TOPICO_TOP_ID": 3, 
+	"MEN_MENSAGEM": "Primeira mensagem do topico"
+}
+
+###
+
+// TÓPICOS
+// Procura por um tópico com base no título
+GET http://localhost:3000/topico
+Content-Type: application/json
+
+{
+  "titulo": "Esse é o título do tópico"
+}
+
+###
+
+// Cria um novo post 
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+	"POS_MENSAGEM": "Primeira mensagem do post",
+	"POS_URL_FOTO": "",
+	"FK_USUARIOS_USR_ID": 9
+}
+
+###
+
+// TAGS
+
+// Cria uma tag
+POST http://localhost:3000/tags/new
+Content-Type: application/json
+
+{
+	"TAG_NOME": "Música",
+	"FK_USUARIOS_USR_ID": 1
+}
