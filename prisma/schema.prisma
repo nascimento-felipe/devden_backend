@@ -51,7 +51,7 @@ model Tags {
 model Mensagens {
   MEN_ID       Int      @id @default(autoincrement())
   MEN_MENSAGEM String   @db.VarChar(200)
-  MEN_DATA     DateTime
+  MEN_DATA     DateTime @default(now())
 
   FK_TOPICO_TOP_ID   Int
   FK_USUARIOS_USR_ID Int
