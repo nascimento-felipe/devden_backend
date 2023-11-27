@@ -20,10 +20,14 @@ import { BuscarTopicoService } from './services/buscar-topico/buscar-topico.serv
 import { BuscarTopicoController } from './controllers/buscar-topico/buscar-topico.controller';
 import { GerenciarTagsService } from './services/gerenciar-tags/gerenciar-tags.service';
 import { GerenciarTagsController } from './controllers/gerenciar-tags/gerenciar-tags.controller';
+import { GetTopicosService } from './services/get-topicos/get-topicos.service';
+import { GetTopicosController } from './controllers/get-topicos/get-topicos.controller';
+import { GerenciarTicketsService } from './services/gerenciar-tickets/gerenciar-tickets.service';
+import { GerenciarTicketsController } from './controllers/gerenciar-tickets/gerenciar-tickets.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController, BuscarMensagemController, CriarPostController, BuscarTopicoController, GerenciarTagsController],
-  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService, BuscarMensagemService, CriarPostService, BuscarTopicoService, GerenciarTagsService],
+  controllers: [AppController, UserController, CriarUsuarioController, LogarController, CriarTopicoController, EnviarMensagemController, BuscarMensagemController, CriarPostController, BuscarTopicoController, GerenciarTagsController, GetTopicosController, GerenciarTicketsController],
+  providers: [AppService, UserService, PrismaService, CriarUsuarioService, LogarService, CriarTopicoService, EnviarMensagemService, BuscarMensagemService, CriarPostService, BuscarTopicoService, GerenciarTagsService, GetTopicosService, GerenciarTicketsService],
 })
 export class AppModule {}
